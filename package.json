@@ -1,0 +1,29 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "demo",
+  "main": "main.js",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "promptly": "^2.1.0",
+    "socket.io": "^1.7.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhenghuahou/node.git"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "zhenghuahou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhenghuahou/node/issues"
+  },
+  "homepage": "https://github.com/zhenghuahou/node#readme"
+}

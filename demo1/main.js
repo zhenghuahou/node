@@ -1,5 +1,18 @@
-
 var fs = require('fs');
+// var promptly = require('promptly');
+
+// /*
+//   password: [Function],
+//   confirm: [Function],
+//   choose: [Function] }
+// */
+// promptly.password('Name: ',['apple', 'orange'], function (err, value) {
+//     // err is always null in this case, because no validators are set
+//     console.log(' value:',value,' err:',err);
+// });
+
+
+return
 // console.log('fs:',fs);
 // var data = fs.readFileSync('in.txt');
 //阻塞代码实例
@@ -30,7 +43,14 @@ var data2 = fs.readFile('json.txt',function(error,data){
 });
 var json = JSON.parse(data.toString());
 console.log('data2:',data2,typeof data2);//data2: undefined undefined
-console.log(data);//Buffer ....
+console.log('data:',data);//data:Buffer ....
 // console.log(typeof data);//object
 console.log(typeof  data.toString());//string
-console.log('<------end!');
+console.log('<------end!',promptly);
+// console.dir({'a':1,'b':2},{colors:true});//value高亮
+// console.dir({'a':1,'b':2});
+
+
+
+
+
