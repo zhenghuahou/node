@@ -1,8 +1,12 @@
-上面的例子是收到请求后生成网页，也可以事前写好网页，存在文件中，然后利用fs模块读取网页文件，将其返回
 
-测试NodeJs 的几种文件路径的区别
 
+1.测试NodeJs 的几种文件路径__dirname,__filename,process.cwd(),./的区别
+
+参考网址:
 https://github.com/imsobear/blog/issues/48
+
+2.返回简单html测试模板
+
 
 
 > 调试命令
