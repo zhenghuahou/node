@@ -10,7 +10,7 @@ app.listen('3000');
 app.timeout = 10000;
 
 console.log(' http:',http);
-console.log(' app:',app);
+// console.log(' app:',app);
 
 function getTestPersonaLoginCredentials(callback) {
   return http.get({
@@ -107,7 +107,8 @@ function httpRequest(){
     }
   };
 
-  var req = http.request(options, (res) => {
+  http.request(options, (res) => {
+    //res is an instance of http.IncomingMessage
       console.log(' res:',res);
       console.log(`STATUS: ${res.statusCode}`);
       console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
@@ -128,8 +129,10 @@ function httpRequest(){
   req.write(postData);
   req.end();
 }
-
 var inst3 =  httpRequest();
+
+console.log(' inst3:',inst3,'inst2:',inst2)
+
 
 function handler3(request,response){
   let {url} = request; 
@@ -157,9 +160,10 @@ function getPostfix(url){
   return  postfix ? '.' + postfix : '';
 }
 
-var filterArr= ['.css','.js','.jpg','.png','.gif','.ico'];
+var filterArr = ['.css','.js','.jpg','.png','.gif','.ico'];
 
 function filter(postfix = ''){
+  console.info(' postfix:',postfix,' filterArr:',filterArr)
   if(postfix && filterArr.includes(postfix)){
     return false
   }
