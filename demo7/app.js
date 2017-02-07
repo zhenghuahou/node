@@ -12,7 +12,6 @@ app.timeout = 10000;
 console.log(' http:',http);
 console.log(' app:',app);
 
-
 function getTestPersonaLoginCredentials(callback) {
   return http.get({
     host: 'localhost',
@@ -21,9 +20,7 @@ function getTestPersonaLoginCredentials(callback) {
   }, function(response) {
     console.info('@@@@ arguments:',arguments);
     var body = ''; 
-
     // response.setEncoding('utf8');
-
     response.on('data', function(d) {
       body += d;
       console.error(typeof body,body,'getTestPersonaLoginCredentials--->data事件:',d,' typeofof d:',typeof d,' arguments:',arguments);
@@ -41,7 +38,6 @@ function getTestPersonaLoginCredentials(callback) {
 var inst1 = getTestPersonaLoginCredentials(function(){
         console.log(' getTestPersonaLoginCredentials 回调:',arguments[0])
       });
-
 
 function httpGet(){
   return  http.get('http://nodejs.org/dist/index.json', (res) => {
@@ -91,10 +87,7 @@ function httpGet(){
     });
 }
 
-
 var inst2 =  httpGet();
-
-
 
 function httpRequest(){
   var postData = querystring.stringify({
@@ -136,7 +129,6 @@ function httpRequest(){
   req.end();
 }
 
-
 var inst3 =  httpRequest();
 
 function handler3(request,response){
@@ -152,7 +144,6 @@ function handler3(request,response){
   }
 }
 
-
 //得到最后一级目录 ，返回最后一级目录/文件名
 function getLastPath(url){
    var arr = url.split('/');
@@ -166,7 +157,6 @@ function getPostfix(url){
   return  postfix ? '.' + postfix : '';
 }
 
-
 var filterArr= ['.css','.js','.jpg','.png','.gif','.ico'];
 
 function filter(postfix = ''){
@@ -176,7 +166,6 @@ function filter(postfix = ''){
   //过滤通过
   return true;
 }
-
 
 function route(request,response,postfix){
   let {url} = request; 
