@@ -1,70 +1,197 @@
 var fs = require('fs');
 var path = require('path');
 var http = require('http');
-var app = http.createServer(handler);
+var app = http.createServer(handler3);
+// var app = http.createServer();
+var querystring = require('querystring');
+
+app.listen('3000');
+
+app.timeout = 10000;
 
 console.log(' http:',http);
 console.log(' app:',app);
-console.log(' fs:',fs);
-
-app.listen('3001','127.0.0.1');
-
-var _app = require('./_app.js');
-console.log(' _app:',_app);
-
-/*
-The process.cwd() method 
-returns the current working directory of the Node.js process.
-*/
-
-// var fa = require('./data.txt');
-// console.log(' fa:',path.dirname(__filename),path.dirname(__filename) + '/data.txt');
-//进入node目录下面，运行 node demo6/app.js
-console.log(__dirname); ///Users/houzhenghua/github/node/demo6
-console.log(__filename);///Users/houzhenghua/github/node/demo6/app.js
-console.log(process.cwd()); ///Users/houzhenghua/github/node
-console.log(path.resolve('./'));///Users/houzhenghua/github/node
-console.log(path.resolve('/'));// /
 
 
-/*
-进入demo6文件夹下面，运行 node app.js
+function getTestPersonaLoginCredentials(callback) {
+  return http.get({
+    host: 'localhost',
+    port:3000,
+    path: '/data.json'
+  }, function(response) {
+    console.info('@@@@ arguments:',arguments);
+    var body = ''; 
 
-console.log(__dirname); //Users/houzhenghua/github/node/demo6
-console.log(__filename);///Users/houzhenghua/github/node/demo6/app.js
-console.log(process.cwd()); ///Users/houzhenghua/github/node/demo6
-console.log(path.resolve('./'));///Users/houzhenghua/github/node/demo6
-console.log(path.resolve('/'));// /
-*/
+    // response.setEncoding('utf8');
 
+    response.on('data', function(d) {
+      body += d;
+      console.error(typeof body,body,'getTestPersonaLoginCredentials--->data事件:',d,' typeofof d:',typeof d,' arguments:',arguments);
+    });
 
-//简单输出 --> test1
-// function handler(request,response){
-//   console.log(' arg:',arguments,request.url);
-//   response.writeHead(200, {'Content-Type': 'text/html'});
-//   response.write('<p>word</p>');
-//   response.write('<a href="http://www.baidu.com">word</a><br>');
-//   response.end('hello!');
-// }
+    response.on('end', function() {
+      var parsed = JSON.parse(body);
 
-
-// console.log(' -->',fs.readFileSync('./demo6/data.txt',{encoding:"utf-8"})); //ok
-// console.log(' -->',fs.readFileSync('demo6/data.txt',{encoding:"utf8"}));//ok
-// console.log(' -->',fs.readFileSync('demo6/data.txt',"utf8"));//ok
-// console.log(' -->',fs.readFileSync('demo6/data.txt',"utf-8"));//ok
-
-
-function handler(request,response){
-    // fs.readFile(path.dirname(__filename) + '/data.txt',function(error,data){
-    // fs.readFile读取文件的路径是相对于启动脚本所在目录的路径
-    // 所以启动目录不一样，fs.readFile读取文件最终解析成的路径也不一样
-    // 为了保险起见,fs.readFile读取文件url使用绝对路径
-    fs.readFile(`${__dirname}/data.txt`,'utf8',function(error,data){
-      console.log(' arguments:',arguments,request.url);
-      console.info(' data:',data,data.length);
-      response.end(data);
-    })
+      console.warn(' getTestPersonaLoginCredentials--->end事件 :',parsed,typeof parsed ,'arg:',arguments)
+      callback(parsed);
+    });
+  });
 }
 
+var inst1 = getTestPersonaLoginCredentials(function(){
+        console.log(' getTestPersonaLoginCredentials 回调:',arguments[0])
+      });
+
+
+function httpGet(){
+  return  http.get('http://nodejs.org/dist/index.json', (res) => {
+      tt1 = +new Date;
+      console.warn(tt1,res.headers['content-length'],res.headers['content-type']
+,' get 自定义方法 res:',res,' res.statusCode:',res.statusCode,' res.end:',res.end);
+      const statusCode = res.statusCode;
+      const contentType = res.headers['content-type'];
+      let error;
+      if (statusCode !== 200) {
+        error = new Error(`Request Failed.\n` +
+                          `Status Code: ${statusCode}`);
+      } else if (!/^application\/json/.test(contentType)) {
+        error = new Error(`Invalid content-type.\n` +
+                          `Expected application/json but received ${contentType}`);
+      }
+      if (error) {
+        console.log(error.message);
+        // consume response data to free up memory
+        res.resume();
+        return;
+      }
+
+      res.setEncoding('utf8');
+
+      let rawData = '';
+      num = 0;
+      res.on('data', (chunk) => {
+        // console.error(' *************',arguments);
+        tt2 = +new Date;
+        num ++;
+        rawData += chunk;
+        console.warn(tt2,' res.data 事件 chunk --->:',typeof chunk,arguments);
+      });
+      res.on('end', () => {
+         tt3 = +new Date;
+         console.warn(tt3,' res.end 事件 --->:',arguments);
+        try {
+          let parsedData = JSON.parse(rawData);
+          console.log('parsedData:', parsedData);
+        } catch (e) {
+          console.log(e.message);
+        }
+      });
+    }).on('error', (e) => {
+      console.log(`Got error: ${e.message}`);
+    });
+}
+
+
+var inst2 =  httpGet();
+
+
+
+function httpRequest(){
+  var postData = querystring.stringify({
+    'msg' : 'Hello World!你'
+  });
+
+  console.error(' Buffer:',Buffer, Buffer.byteLength(postData), ' len:',postData.length);
+
+  var options = {
+    hostname: 'www.google.com',
+    port: 80,
+    // path: '/upload',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': Buffer.byteLength(postData)
+    }
+  };
+
+  var req = http.request(options, (res) => {
+      console.log(' res:',res);
+      console.log(`STATUS: ${res.statusCode}`);
+      console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+      res.setEncoding('utf8');
+      res.on('data', (chunk) => {
+        console.log(`BODY: ${chunk}`);
+      });
+      res.on('end', () => {
+        console.log('No more data in response.');
+      });
+  });
+
+  req.on('error', (e) => {
+      console.log(`problem with request: ${e.message}`,'e:',e,'  《  req:',req);
+  });
+
+  // write data to request body
+  req.write(postData);
+  req.end();
+}
+
+
+var inst3 =  httpRequest();
+
+function handler3(request,response){
+  let {url} = request; 
+  let postfix = getPostfix(url);
+
+  if(filter(postfix)){
+    console.info(request.headers['content-length'],request.headers['connection'],'浏览器发出的请求  request:',request,
+      ' request.statusCode:',request.statusCode,
+      ' response:',response);
+    route(request,response,postfix);
+
+  }
+}
+
+
+//得到最后一级目录 ，返回最后一级目录/文件名
+function getLastPath(url){
+   var arr = url.split('/');
+   return arr[arr.length - 1];
+}
+
+//得到资源文件后缀 返回后缀名
+function getPostfix(url){
+  var name = getLastPath(url);
+  var postfix = name.split('.')[1]
+  return  postfix ? '.' + postfix : '';
+}
+
+
+var filterArr= ['.css','.js','.jpg','.png','.gif','.ico'];
+
+function filter(postfix = ''){
+  if(postfix && filterArr.includes(postfix)){
+    return false
+  }
+  //过滤通过
+  return true;
+}
+
+
+function route(request,response,postfix){
+  let {url} = request; 
+  t1 = +new Date;
+  // console.info(' route-->postfix:',postfix);
+  postfix = postfix ? '': '.html'
+  fs.readFile(`${__dirname}/static/${url}${postfix}`,function(error,data){
+      let html ='';
+      response.writeHead(200, {'Content-Type': 'text/html'});
+      t2 = +new Date;
+      console.log(error,' data:',data,' t2:',t2,' t2-t1:',t2-t1)
+      html = error ? '404:-O,页面迷路了' : data;
+      response.end(html);
+
+  })
+}
 
 
