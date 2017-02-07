@@ -7,7 +7,5 @@ https://github.com/imsobear/blog/issues/48
 
 2.返回简单html测试模板
 
-
-
-> 调试命令
-devtool demo6/app.js -w
+3.调试命令
+> devtool demo6/app.js -w
