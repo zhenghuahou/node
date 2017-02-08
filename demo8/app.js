@@ -27,14 +27,13 @@ function getType(postfix=''){
     var type;
     // switch(filename.substring(filename.lastIndexOf('.') + 1))  {
     switch(postfix){
-      
       case 'js':       type = 'application/javascript; charset=UTF-8'; break;
       case 'css':      type = 'text/css; charset=UTF-8'; break;
       case 'txt' :     type = 'text/plain; charset=UTF-8'; break;
       case 'manifest': type = 'text/cache-manifest; charset=UTF-8'; break;
       case 'html':
       case 'htm':  
-      default:     type = 'text/html; charset=UTF-8'; 
+      default:     type = 'text/html; charset=UTF-8'; break;
       // default:         type = 'application/octet-stream'; break;
     }
     return type;
@@ -49,57 +48,49 @@ server.on('request',function(request,response){
     response.write(chunk); 
   });
   request.on('end', function(chunk) { 
-    console.error('1 request-->end chunk:',chunk);
-    // response.end(); 
+    console.error('4 request-->end chunk:',chunk,'time:',+new Date);
+    // response.end();  //加了这行，就关闭了数据传输，5处的content就写入不了
   });
 
   var postfix = getPostfix(_url);
   var type = getType(postfix);
-
-  // console.warn('****',  'request.setEncoding:',request.setEncoding,  'response.setEncoding:',response.setEncoding);
+  
+  //response.setHeader(name, value)
+  //response.writeHead(statusCode[, statusMessage][, headers])
+  //writeHead比setHeader具有更高的优先级
   // response.setHeader('Content-Type', 'text/plain');
-  //setHeader
-  response.setHeader('X-Foo', 'bar');
   response.writeHead(200, {
-    // 'Content-Type': 'text/html; charset=UTF-8'
-    'Content-Type': type
+    'Content-Type': type,
+    'X-Foo':'bala'
   });
+  var t1 = +new Date;
 
-  // response.write(request.method + ' ' + request.url +
-      // ' HTTP/' + request.httpVersion + '\r\n');
-  response.write(`postfix:${postfix}--type:${type}<br>`);
+  console.info('0:',t1,' postfix:',postfix,' type:',type);
+
+  response.write(`new Date:${+new Date}--type:${type}<br>`);
   response.write(`${JSON.stringify(_url)} ${request.method} ${request.url} HTTP/${request.httpVersion}<br>`);
   response.write('headers:<br>')
   for (var h in request.headers) {
     response.write(`${h} :  ${request.headers[h]} <br>`);
   }
-
   
-  var w = response.write('Hello 世界<br>');
-  // var e = response.end(function(){
-  //   console.log(' end---》',arguments);
+  //加了这行，就关闭了数据传输，5处的content就写入不了
+  // response.end(function(){
+  //   console.log('3 response.end 回调函数:','arguments:',arguments,'time:',+new Date);
   // });
+
+  console.warn('1:',+new Date,' response:',response);
 
   var filename = _url.pathname.substring(1);
 
   fs.readFile(filename, function (err, content) {
-    console.log('2 err:',err,' content:',content,' filename:',filename)
-      if (err) {
-        // response.writeHead(404, {
-        //   'Content-Type': 'text/plain; charset=UTF-8'});
-        response.write('err.message:'+err.message);
-        response.end();
-      } else {
-        response.writeHead(200, {'Content-Type': type});
-        response.write(content);
-        response.end();
-      }
+      var contentType = response.getHeader('content-type');
+      console.error('5 err:',err,' time:',+new Date);
+      content = err ? err.message: content;
+      response.end(content); //5
     });
 
-  console.warn('0________________________________')
-  // console.info(' argument:',arguments,' _url:',_url);
-  // console.info(' w:',w,' e:',e);//w:true e:true
-
+  console.warn('2__________________位置最后的console________________！！')
 });
 
 
