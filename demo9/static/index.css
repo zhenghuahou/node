@@ -1,0 +1,14 @@
+*{
+margin: 0;
+padding: 0;
+}
+body{
+color: #fff;
+background: #ccc;
+text-align: center;
+}
+a{
+    color: #666;
+    border:2px dashed #f00;
+    text-align: center;
+}

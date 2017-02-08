@@ -80,7 +80,7 @@ server.on('request',function(request,response){
       console.error('5 err:',err,' time:',+new Date);
       content = err ? err.message: content;
       response.end(content); //5
-    });
+  });
 
   console.warn('2__________________位置最后的console________________！！')
 });
