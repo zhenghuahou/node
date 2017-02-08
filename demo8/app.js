@@ -23,9 +23,7 @@ function getPostfix(url){
 }
 
 function getType(postfix=''){
-  // var filename = url.pathname.substring(1);
     var type;
-    // switch(filename.substring(filename.lastIndexOf('.') + 1))  {
     switch(postfix){
       case 'js':       type = 'application/javascript; charset=UTF-8'; break;
       case 'css':      type = 'text/css; charset=UTF-8'; break;
@@ -39,10 +37,15 @@ function getType(postfix=''){
     return type;
 }
 
+
+//console 执行顺序 按照下面标注的顺序 0->1->2->3->4->5
 server.on('request',function(request,response){
   // 解析请求的URL
   var _url = url.parse(request.url);
-  
+  var filename = _url.pathname.substring(1);
+  var postfix = getPostfix(_url);
+  var type = getType(postfix);
+
   request.on('data', function(chunk) { 
     console.error('request---> data chunk:',chunk);
     response.write(chunk); 
@@ -51,9 +54,6 @@ server.on('request',function(request,response){
     console.error('4 request-->end chunk:',chunk,'time:',+new Date);
     // response.end();  //加了这行，就关闭了数据传输，5处的content就写入不了
   });
-
-  var postfix = getPostfix(_url);
-  var type = getType(postfix);
   
   //response.setHeader(name, value)
   //response.writeHead(statusCode[, statusMessage][, headers])
@@ -81,7 +81,6 @@ server.on('request',function(request,response){
 
   console.warn('1:',+new Date,' response:',response);
 
-  var filename = _url.pathname.substring(1);
 
   fs.readFile(filename, function (err, content) {
       var contentType = response.getHeader('content-type');
