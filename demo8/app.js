@@ -1,20 +1,13 @@
 var fs = require('fs');
 var path = require('path');
 var http = require('http');
-var app = http.createServer();
 var url = require('url');
 var querystring = require('querystring');
-
-app.listen('3000');
-
-
 
 
 var server = new http.Server();
 server.listen(8000);
 
-
-server.method ='POST';
 
 function getPostfix(url){
   let {pathname} = url;
@@ -93,8 +86,4 @@ server.on('request',function(request,response){
 });
 
 
-// console.log(' http:',http);
-// console.log(' server:',server);
-// console.log(' app:',app);
-// console.log(' app.on === server.on:',app.on === server.on);//true
 
