@@ -28,4 +28,17 @@ function start(route,handle) {
   console.log("Server has started.");
 }
 
+// var str = 'name:Sophie;shape:fox;condition:new';
+// var obj =  querystring.parse(str, ';', ':');
+// console.log('querystring:', obj);
+// {
+//   name: 'Sophie',
+//   shape: 'fox',
+//   condition: 'new',
+// }
+// console.info(' querystring:',querystring.stringify(obj));
+//querystring:name=Sophie&shape=fox&condition=new
+
 exports.start = start;
+
+// module.exports === exports //true
