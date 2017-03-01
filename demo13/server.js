@@ -1,0 +1,33 @@
+var http = require("http");
+var querystring = require("querystring");
+var url = require("url");
+
+
+function start(route,handle) {
+  http.createServer(function onRequest(request, response) {
+    var pathname = url.parse(request.url).pathname;
+    console.warn("Request received.",request.url,url.parse(request.url),
+    ' pathname:',pathname);
+
+    var postData='';
+    request.setEncoding("utf8");
+    
+    // request.addListener("data", function(postDataChunk) {
+    //   postData += postDataChunk;
+    //   console.warn("Received POST data chunk '",
+    //   postDataChunk , "  arguments:",arguments);
+    // });
+
+    // request.addListener("end", function() {
+    //    console.warn("Received POST end chunk  arguments:",arguments);
+    //   route(handle, pathname, response, request,postData);
+    // });
+    // route(handle, pathname, response, request,postData);
+    route(handle, pathname, response, request);
+    console.warn('=================================','postData:',postData)
+  }).listen(8888);
+
+  console.log("Server has started.");
+}
+
+exports.start = start;
