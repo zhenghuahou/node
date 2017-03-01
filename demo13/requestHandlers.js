@@ -35,27 +35,27 @@ function start(response) {
 
 
 function upload(res,req,postData) {
-  console.info("upload------------->Request handler 'upload' was called.",          querystring.parse(postData));
   console.info("upload------------->Request handler 'upload' was called. arguments:",arguments);
-    var form = new formidable.IncomingForm();
-    console.error("about to parse");
-    form.on('field',function(field,value){
-      console.warn(' field--->filed:',field,' value:',value,' ag:',arguments);
-    }).on('file',function(field,value){
-      console.warn(' file------------>filed:',field,' value:',value,' ag:',arguments);
-    }).on('end',function(){
-      console.warn(' end--->',arguments);
-    });
+    var form = new formidable();
+    console.error("about to parse",form,form.uploadDir);
+    // form.on('field',function(field,value){
+    //   console.warn(' field--->filed:',field,' value:',value,' ag:',arguments);
+    // }).on('file',function(field,value){
+    //   console.warn(' file------------>filed:',field,' value:',value,' ag:',arguments);
+    // }).on('end',function(){
+    //   console.warn(' end--->',arguments);
+    // });
     form.parse(req, function(err, fields, files) {
       // var t = util.inspect(fields);
       // var t = util.inspect({fields: fields, files: files})
       // console.log(t);
       console.warn(' ******',arguments,' fields:',fields, ' files:',files);
+       fs.renameSync(files.upload.path, "/tmp/test.png");
       // fs.rename(fields.upload[0], '/tmp/test.png', (err) => {
       //   if (err) throw err;
       //   console.log('renamed complete');
       // });
-      // res.writeHead(200, {'content-type': 'text/html'});
+      res.writeHead(200, {'content-type': 'text/html'});
       res.write("received image:<br/><img src='/show' />");
       res.end();
       // res.end(util.inspect({fields: fields, files: files}));
@@ -72,7 +72,7 @@ function show(response){
         response.write(error+"\n");
         response.end();
       }else{
-        //  response.writeHead(200, {"Content-Type": "image/png"});
+         response.writeHead(200, {"Content-Type": "image/png"});
          response.write(file, "binary");
          response.end();
       }

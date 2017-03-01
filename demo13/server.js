@@ -9,8 +9,7 @@ function start(route,handle) {
     console.warn("Request received.",request.url,url.parse(request.url),
     ' pathname:',pathname);
 
-    var postData='';
-    request.setEncoding("utf8");
+    // var postData='';
     
     // request.addListener("data", function(postDataChunk) {
     //   postData += postDataChunk;
@@ -24,7 +23,6 @@ function start(route,handle) {
     // });
     // route(handle, pathname, response, request,postData);
     route(handle, pathname, response, request);
-    console.warn('=================================','postData:',postData)
   }).listen(8888);
 
   console.log("Server has started.");
