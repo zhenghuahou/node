@@ -17,5 +17,5 @@ exports.types = {
     "wma": "audio/x-ms-wma",
     "wmv": "video/x-ms-wmv",
     "xml": "text/xml",
-    "default":"text/plain"
+    "default": "text/plain"
 };

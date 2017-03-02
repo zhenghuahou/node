@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>简单的图片上传预览demo</title>
-        <link rel="shortcut icon" href="/global/img/alc_logo.jpg">
-        <link type="text/css" rel="stylesheet" href="./index.css"/>
-    </head>
-    <body>
-        <form class='form-box' action="/upload" enctype="multipart/form-data" method="post">
-            <!--<input class='file' type="file" name="v-upload" value="上传文件" multiple="multiple"><br>-->
-            <!--<a href="javascript:;" class="upload-box">点击这里上传文件-->
-                <input type="file" class='file' multiple="multiple" name="v-upload" value="上传文件">
-            <!--</a>-->
-            <input class='btn btn_demo1' type="submit" value="提交文件" />
-        </form>
-        <script src='./index.js'></script>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>简单的图片上传预览demo</title>
+    <link rel="shortcut icon" href="/global/img/alc_logo.jpg">
+    <link type="text/css" rel="stylesheet" href="./index.css" />
+</head>
+
+<body>
+    <form class='form-box' action="/upload" enctype="multipart/form-data" method="post">
+        <input type="file" class='file' multiple="multiple" name="v-upload" value="上传文件">
+        <input class='btn btn_demo1' type="submit" value="提交文件" />
+    </form>
+    <script src='./index.js'></script>
+</body>
+
 </html>
