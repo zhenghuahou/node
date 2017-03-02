@@ -5,7 +5,6 @@ var path = require('path');
 var util = require("util");
 var url = require("url");
 var mime = require("./mime").types;
-console.log(' mine:', mime);
 var isSelectFile = false; //是否选择了文件
 
 function static(response, request, ext) {
@@ -20,7 +19,6 @@ function static(response, request, ext) {
     })
 }
 
-
 function start(response) {
     fs.readFile(`${__dirname}/static/index.html`, function (err, data) {
         console.warn('start里面的readFile函数 err-->data:', arguments);
@@ -29,8 +27,6 @@ function start(response) {
         response.end();
     })
 }
-
-
 
 function upload(res, req, postData) {
     console.info("upload函数------------->Request handler 'upload' was called. arguments:", arguments);
