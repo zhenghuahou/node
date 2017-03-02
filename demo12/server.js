@@ -6,11 +6,11 @@ var url = require("url");
 function start(route,handle) {
   http.createServer(function onRequest(request, response) {
     var pathname = url.parse(request.url).pathname;
-    console.info(' *****',pathname);
     // console.warn("Request received.",request.url,url.parse(request.url),
     // ' pathname:',pathname);
 
     // var postData='';
+    
     // request.addListener("data", function(postDataChunk) {
     //   postData += postDataChunk;
     //   console.warn("Received POST data chunk '",

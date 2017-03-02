@@ -74,7 +74,6 @@ server.on('request',function(request,response){
 
   console.warn('1:',+new Date,' response:',response);
 
-
   fs.readFile(filename, function (err, content) {
       var contentType = response.getHeader('content-type');
       console.error('5 err:',err,' time:',+new Date);
