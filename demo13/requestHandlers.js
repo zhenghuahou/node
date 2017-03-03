@@ -5,18 +5,102 @@ var path = require('path');
 var util = require("util");
 var url = require("url");
 var mime = require("./mime").types;
+var config = require("./config");
+var zlib = require("zlib")
+
+
+console.warn(' zlib:', zlib);
+/*
+exports.Expires = {
+    fileMatch: /^(html|gif|png|jpg|js|css)$/ig,
+    maxAge: 60 * 60 * 24 * 365
+};
+*/
 var isSelectFile = false; //是否选择了文件
+
+
+function parseCookie(request) {
+    var Cookies = {};
+    request.headers.cookie && request.headers.cookie.split(';').forEach(function (Cookie) {
+        var parts = Cookie.split('=');
+        Cookies[parts[0].trim()] = (parts[1] || '').trim();
+    });
+    console.warn('Cookies:', Cookies, ' request.headers.cookie:', request.headers.cookie, typeof request.headers.cookie);
+
+}
 
 function static(response, request, ext) {
     ext = ext.slice(1);
+    let {Expires} = config;
+    let {maxAge} = Expires;
+    // parseCookie(request);
 
-    fs.readFile(`${__dirname}/static/${request.url}`, 'utf-8', function (err, data) {
+    //设置缓存信息
+    if (ext.match(Expires.fileMatch)) {
+        let expires = new Date();
+        expires.setTime(+expires + maxAge * 1000);
+        response.setHeader('Set-Cookie', ['test=11', 'language=js']);
+        response.setHeader('Expires', expires.toUTCString());
+        response.setHeader('Cache-control', "max-age=" + maxAge);
+        // console.error(+new Date,request,response,'request.write:',request.write,'response.write:',response.write);
+    }
+
+    let realpath = `${__dirname}/static/${request.url}`;
+    fs.readFile(realpath, 'utf-8', function (err, data) {
         // console.warn('start里面的readFile函数 err-->data:',arguments);
-        var contentType = mime[ext] || mime.default;
-        response.writeHead(200, { "Content-Type": contentType });
-        response.write(data);
-        response.end();
-    })
+        if (err) throw err;
+        fs.stat(realpath, (err, stats) => {
+            if (err) throw err;
+
+            let raw = fs.createReadStream(realpath);
+            let contentType = mime[ext] || mime.default;
+            let lastModified = stats.mtime.toUTCString();
+            let {headers} = request;
+            let ifModifiedSince = headers["if-modified-since"];
+            let {'accept-encoding': acceptEncoding = ''} = headers;
+            let matched = ext.match(config.Compress.match);
+
+            console.warn(+new Date, ' lastModified----->', lastModified, 'stat', stats);
+
+            response.setHeader("Last-Modified", lastModified);
+            response.setHeader("Content-Type", contentType);
+
+            if (ifModifiedSince && lastModified == ifModifiedSince) {
+                response.writeHead(304, 'Not Modified');
+                response.end();
+                return;
+            }
+
+            if (matched && acceptEncoding.match(/\bgzip\b/)) {
+                response.writeHead(200, "Ok", {
+                    'Content-Encoding': 'gzip'
+                });
+                // console.warn(' zlib.createGzip()-------->',zlib.createGzip());
+                // console.warn(' raw.pipe(zlib.createGzip())-------->',raw.pipe(zlib.createGzip()));
+                // console.warn(' raw.pipe(response)-------->',raw.pipe(response));
+                raw.pipe(zlib.createGzip()).pipe(response);
+            } else if (matched && acceptEncoding.match(/\bdeflate\b/)) {
+                response.writeHead(200, "Ok", {
+                    'Content-Encoding': 'deflate'
+                });
+                raw.pipe(zlib.createDeflate()).pipe(response);
+            } else {
+                response.writeHead(200, "Ok");
+                raw.pipe(response);
+            }
+
+            // raw.pipe(response,{end:false});
+            // raw.on('end', function() {
+            //     console.error(' data------->',data);
+            //     response.end(data); //171
+            // });
+
+            // response.write(data);
+            // response.end();
+        });
+
+        console.info(+new Date, '--------------------> response:', response.getHeader("Set-Cookie"));
+    });
 }
 
 function start(response) {
@@ -75,8 +159,6 @@ function renameFileSync(files = []) {
     });
     console.warn(+new Date, '002 renameFile函数 files_---->', files);
 }
-
-
 
 let types = ['.jpg', '.png', '.gif'];
 function isPic(file = '') {
