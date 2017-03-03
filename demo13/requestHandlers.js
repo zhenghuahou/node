@@ -7,17 +7,8 @@ var url = require("url");
 var mime = require("./mime").types;
 var config = require("./config");
 var zlib = require("zlib")
-
-
-console.warn(' zlib:', zlib);
-/*
-exports.Expires = {
-    fileMatch: /^(html|gif|png|jpg|js|css)$/ig,
-    maxAge: 60 * 60 * 24 * 365
-};
-*/
+// console.warn(' zlib:', zlib);
 var isSelectFile = false; //是否选择了文件
-
 
 function parseCookie(request) {
     var Cookies = {};
@@ -26,15 +17,15 @@ function parseCookie(request) {
         Cookies[parts[0].trim()] = (parts[1] || '').trim();
     });
     console.warn('Cookies:', Cookies, ' request.headers.cookie:', request.headers.cookie, typeof request.headers.cookie);
-
 }
 
 function static(response, request, ext) {
     ext = ext.slice(1);
     let {Expires} = config;
     let {maxAge} = Expires;
-    // parseCookie(request);
 
+    // parseCookie(request);
+    
     //设置缓存信息
     if (ext.match(Expires.fileMatch)) {
         let expires = new Date();
