@@ -40,55 +40,58 @@ function static(response, request, ext) {
     fs.readFile(realpath, 'utf-8', function (err, data) {
         // console.warn('start里面的readFile函数 err-->data:',arguments);
         if (err) throw err;
-        fs.stat(realpath, (err, stats) => {
-            if (err) throw err;
+        console.error(' setTimeout------------------>')
+        // setTimeout(function(){ //css会阻塞html渲染，即使html已经返回了，但是css没有返回，html还是不会渲染（前提是没有缓存过css）
+        console.warn(' setTimeout------------------> start')
+            fs.stat(realpath, (err, stats) => {
+                if (err) throw err;
 
-            let raw = fs.createReadStream(realpath);
-            let contentType = mime[ext] || mime.default;
-            let lastModified = stats.mtime.toUTCString();
-            let {headers} = request;
-            let ifModifiedSince = headers["if-modified-since"];
-            let {'accept-encoding': acceptEncoding = ''} = headers;
-            let matched = ext.match(config.Compress.match);
+                let raw = fs.createReadStream(realpath);
+                let contentType = mime[ext] || mime.default;
+                let lastModified = stats.mtime.toUTCString();
+                let {headers} = request;
+                let ifModifiedSince = headers["if-modified-since"];
+                let {'accept-encoding': acceptEncoding = ''} = headers;
+                let matched = ext.match(config.Compress.match);
 
-            console.warn(+new Date, ' lastModified----->', lastModified, 'stat', stats);
+                console.warn(+new Date, ' lastModified----->', lastModified, 'stat', stats);
 
-            response.setHeader("Last-Modified", lastModified);
-            response.setHeader("Content-Type", contentType);
+                response.setHeader("Last-Modified", lastModified);
+                response.setHeader("Content-Type", contentType);
 
-            if (ifModifiedSince && lastModified == ifModifiedSince) {
-                response.writeHead(304, 'Not Modified');
-                response.end();
-                return;
-            }
+                if (ifModifiedSince && lastModified == ifModifiedSince) {
+                    response.writeHead(304, 'Not Modified');
+                    response.end();
+                    return;
+                }
 
-            if (matched && acceptEncoding.match(/\bgzip\b/)) {
-                response.writeHead(200, "Ok", {
-                    'Content-Encoding': 'gzip'
-                });
-                // console.warn(' zlib.createGzip()-------->',zlib.createGzip());
-                // console.warn(' raw.pipe(zlib.createGzip())-------->',raw.pipe(zlib.createGzip()));
-                // console.warn(' raw.pipe(response)-------->',raw.pipe(response));
-                raw.pipe(zlib.createGzip()).pipe(response);
-            } else if (matched && acceptEncoding.match(/\bdeflate\b/)) {
-                response.writeHead(200, "Ok", {
-                    'Content-Encoding': 'deflate'
-                });
-                raw.pipe(zlib.createDeflate()).pipe(response);
-            } else {
-                response.writeHead(200, "Ok");
-                raw.pipe(response);
-            }
+                //对已经压缩的文件一样有显著的效果，在传输时候，文件大小能节省不少
+                if (matched && acceptEncoding.match(/\bgzip\b/)) {
+                    response.writeHead(200, "Ok", {
+                        'Content-Encoding': 'gzip'
+                    });
+                    raw.pipe(zlib.createGzip()).pipe(response);
+                } else if (matched && acceptEncoding.match(/\bdeflate\b/)) {
+                    response.writeHead(200, "Ok", {
+                        'Content-Encoding': 'deflate'
+                    });
+                    raw.pipe(zlib.createDeflate()).pipe(response);
+                } else {
+                    response.writeHead(200, "Ok");
+                    raw.pipe(response);
+                }
 
-            // raw.pipe(response,{end:false});
-            // raw.on('end', function() {
-            //     console.error(' data------->',data);
-            //     response.end(data); //171
-            // });
+                // raw.pipe(response,{end:false});
+                // raw.on('end', function() {
+                //     console.error(' data------->',data);
+                //     response.end(data); //171
+                // });
 
-            // response.write(data);
-            // response.end();
-        });
+                // response.write(data);
+                // response.end();
+            });
+
+        // },10000);
 
         console.info(+new Date, '--------------------> response:', response.getHeader("Set-Cookie"));
     });
