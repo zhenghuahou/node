@@ -3,16 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>简单的图片上传预览demo</title>
+    <style>
+    body{
+        color: red;
+    }
+    </style>
     <link href="https://www.google.com/images/branding/product/ico/googleg_lodp.ico" rel="shortcut icon">
+    <script>
+    console.time('a')
+    document.addEventListener("DOMContentLoaded", function(event) {
+        console.timeEnd('a');
+        console.log("DOM fully loaded and parsed");
+    });
+    </script>
+
+     <script defer src='./index.js'></script>
     <link type="text/css" rel="stylesheet" href="./index.css" />
 </head>
 
 <body>
+    <p>test async</p>
+    <p>test</p>
+    <p>test</p>
     <form class='form-box' action="/upload" enctype="multipart/form-data" method="post">
         <input type="file" class='file' multiple="multiple" name="v-upload" value="上传文件">
         <input class='btn btn_demo1' type="submit" value="提交文件" />
     </form>
-  <!--  <script src='./index.js'></script>-->
+    
+   
 </body>
 
 </html>

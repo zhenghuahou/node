@@ -38,11 +38,18 @@ function static(response, request, ext) {
 
     let realpath = `${__dirname}/static/${request.url}`;
     fs.readFile(realpath, 'utf-8', function (err, data) {
-        // console.warn('start里面的readFile函数 err-->data:',arguments);
         if (err) throw err;
-        console.error(' setTimeout------------------>')
-        // setTimeout(function(){ //css会阻塞html渲染，即使html已经返回了，但是css没有返回，html还是不会渲染（前提是没有缓存过css）
-        console.warn(' setTimeout------------------> start')
+        let time = ext ==='css' ? 0 : 4000;
+        console.error(' setTimeout------------------>',time,'ext:',ext);
+        setTimeout(function(){ 
+        //link外链引入的css不论是放在body的底部，还是放在head的头部都会阻塞html渲染，即使html已经返回了，但是css没有返回，页面还是不会渲染（前提是没有缓存过css）
+        //但是script外链引入的js放在头部时也会阻塞页面渲染，导致页面白屏，
+        //但是如果script外链引入的js放在body最底部，不会阻塞页面渲染，即不会导致白屏，但是会阻塞DOMContentLoaded事件触发时机
+
+        //如果script 外链依然放在head头部，可以添加async属性，异步下载html，不会阻塞html解析，但是js下载完毕，执行js时候会阻塞html解析
+
+        //如果script 外链依然放在head头部，可以添加defer属性，异步下载html，不会阻塞html解析，知道html解析完毕，才会执行这个js，而且js执行顺序和它们在页面的顺序是一致的。defer会阻塞DOMContentLoaded事件触发时机
+
             fs.stat(realpath, (err, stats) => {
                 if (err) throw err;
 
@@ -70,6 +77,7 @@ function static(response, request, ext) {
                     response.writeHead(200, "Ok", {
                         'Content-Encoding': 'gzip'
                     });
+                    
                     raw.pipe(zlib.createGzip()).pipe(response);
                 } else if (matched && acceptEncoding.match(/\bdeflate\b/)) {
                     response.writeHead(200, "Ok", {
@@ -91,7 +99,7 @@ function static(response, request, ext) {
                 // response.end();
             });
 
-        // },10000);
+        }, time);
 
         console.info(+new Date, '--------------------> response:', response.getHeader("Set-Cookie"));
     });
@@ -100,9 +108,12 @@ function static(response, request, ext) {
 function start(response) {
     fs.readFile(`${__dirname}/static/index.html`, function (err, data) {
         console.warn('start里面的readFile函数 err-->data:', arguments);
-        response.writeHead(200, { "Content-Type": "text/html" });
-        response.write(data);
-        response.end();
+        // setTimeout(function(){
+                response.writeHead(200, { "Content-Type": "text/html" });
+                response.write(data);
+                response.end();
+        // },6000)
+      
     })
 }
 
