@@ -6,7 +6,7 @@ var arr = new Array(5*1024*1024);
 var ws = new WeakSet();
 ws.add(arr)
 console.info(' ws:',ws);
-console.log(,'002 向ws添加ws对象后:',strigify(process.memoryUsage(),null,' '));
+console.log('002 向ws添加ws对象后:',strigify(process.memoryUsage(),null,' '));
 
 //解除对象arr的引用  
 // arr = null;//注释掉这行内存没有减少多少，即使手动执行执行垃圾回收
