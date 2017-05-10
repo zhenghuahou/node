@@ -5,6 +5,9 @@
         setTimeout(function(){
             console.warn('[after 15 && before 16] timeout3',+new Date);
         },0)
+        setTimeout(function(){
+            console.warn('【24】timeout3',+new Date);//顺序偶尔会出现在'[after 15 && before 16] timeout3'之后，绝大部分都是最后一个输出
+        },10)
         console.log('[8]:timeout1',+new Date); //8
         process.nextTick(function() {
             console.log('[12-1]:timeout1_nextTick',+new Date);//12-1
