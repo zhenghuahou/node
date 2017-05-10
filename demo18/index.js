@@ -1,5 +1,6 @@
 //事件循环机制实践
 //[num]:num为执行顺序
+//原文网址：http://mp.weixin.qq.com/s?__biz=MzAxODE2MjM1MA==&mid=2651552169&idx=2&sn=451eb6181346ccd8293ba876b3458dea&chksm=8025ae68b752277ed927c53a4a9f526084b0c3dbc16c702369e2476a25f9745648a10fe1c2bd&mpshare=1&scene=23&srcid=0509qtjkSEmiqHPHnU3PBqiU#rd
     console.log(+new Date,'[1]:golb1',process);//1
     setTimeout(function() {
         console.log('[8]:timeout1'); //8
