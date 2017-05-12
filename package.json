@@ -25,7 +25,8 @@
     "desc-test3":"npm run test3会运行01.spec.js..,dir子目录的js测试用例即会运行test目录下面所以测试用例.因为改用了Shell通配符",
     "test3": "./node_modules/.bin/_mocha demo19/test/{,**/}*.js --compilers  js:babel-core/register",
     "desc-test4":"npm run test4 与 npm run test3等价，效果一样",
-    "test4": "node_modules/.bin/_mocha demo19/test/{,**/}*.js --compilers  js:babel-core/register"
+    "test4": "node_modules/.bin/_mocha demo19/test/{,**/}*.js --compilers  js:babel-core/register",
+    "test5": "node_modules/.bin/_mocha demo19/test/{,**/}*.js  --opts demo19/test/mocha.opts --reporter markdown > demo19/test/spec.md"
   },
   "repository": {
     "type": "git",
