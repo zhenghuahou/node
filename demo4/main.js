@@ -37,7 +37,7 @@ finish - 所有数据已被写入到底层系统时触发。
 
 var fs = require('fs');
 var readFile = fs.readFile;
-console.log(' readFile:',readFile);
+// console.log(' readFile:',readFile);
 
 // var asyncReadFile = async function (){
 //   var f1 = await readFile('input.txt');
@@ -45,12 +45,31 @@ console.log(' readFile:',readFile);
 //   console.log(f1.toString());
 //   console.log(f2.toString());
 // };
+global.f1 ='';
+global.writable = fs.createWriteStream('input2.txt');
+// global.writable = fs.createReadStream('input.txt', {start: 0, end: 99});
+// var asyncReadFile =  function (){
+//     f1 =  readFile('input.txt');
+// };
+console.log(' writable::::',writable,writable.toString())
+// asyncReadFile();
 
 
+global.file = fs.createReadStream('input.txt');
+global.data ='';
+file.on('data', function(chunk) {
+    console.warn(' --->',chunk,' arguments:',arguments,typeof arguments[0],{}.toString.call(arguments[0]),chunk.length,chunk.contents)
+   data += chunk;
+});
 
 
-
-
+const writable2 = fs.createWriteStream('file.txt');
+console.dir('writable2:',writable2)
+writable2.write('node 流 实践,');
+writable2.write('<<<<<<<node 流 实践,');
+// All the data from readable goes into 'file.txt'
+file.pipe(writable2);
+// file.pipe();
 
 
 
