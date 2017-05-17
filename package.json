@@ -7,6 +7,7 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
     "formidable": "^1.1.1",
+    "node-fetch": "^1.6.3",
     "promptly": "^2.1.0",
     "socket.io": "^1.7.2"
   },
@@ -18,13 +19,13 @@
   },
   "scripts": {
     "test": "mocha demo19/test/**/*.js --require babel-core/register",
-    "desc-test1":"npm run test1值会运行test/dir子目录的js测试用例.由于npm脚本就是Shell脚本,*会先被shell解释",
+    "desc-test1": "npm run test1值会运行test/dir子目录的js测试用例.由于npm脚本就是Shell脚本,*会先被shell解释",
     "test1": " ./node_modules/.bin/_mocha demo19/test/**/*.js --require babel-core/register",
-    "desc-test2":"npm run test2会运行01.spec.js..,dir子目录的js测试用例即会运行test目录下面所以测试用例。原因是目录通配符放在单引号中,所以能正确解析为test下面任何子目录",
+    "desc-test2": "npm run test2会运行01.spec.js..,dir子目录的js测试用例即会运行test目录下面所以测试用例。原因是目录通配符放在单引号中,所以能正确解析为test下面任何子目录",
     "test2": " ./node_modules/.bin/_mocha 'demo19/test/**/*.js' --require babel-core/register",
-    "desc-test3":"npm run test3会运行01.spec.js..,dir子目录的js测试用例即会运行test目录下面所以测试用例.因为改用了Shell通配符",
+    "desc-test3": "npm run test3会运行01.spec.js..,dir子目录的js测试用例即会运行test目录下面所以测试用例.因为改用了Shell通配符",
     "test3": "./node_modules/.bin/_mocha demo19/test/{,**/}*.js --compilers  js:babel-core/register",
-    "desc-test4":"npm run test4 与 npm run test3等价，效果一样",
+    "desc-test4": "npm run test4 与 npm run test3等价，效果一样",
     "test4": "node_modules/.bin/_mocha demo19/test/{,**/}*.js --compilers  js:babel-core/register",
     "test5": "node_modules/.bin/_mocha demo19/test/{,**/}*.js  --opts demo19/test/mocha.opts",
     "test6": "node_modules/.bin/_mocha demo19/test/{,**/}*.js  --opts demo19/test/mocha.opts --reporter markdown > demo19/test/spec.md"
