@@ -9,11 +9,11 @@ import fetch from 'node-fetch';
 
 describe('My First Test[test.spec.js]', () => {
       console.warn("test.spec.js-->",+new Date);
-      it('should get "Hello Tmall#￥%"', function (){
+      it('should get "Hello Tmall"', function (){
         console.log('it[test.spec.js]',+new Date)
         mylib().should.be.eql('Hello Tmall');
       });
-      it('测试应该5000毫秒后结束￥￥￥', function(done) {
+      it('测试应该5000毫秒后结束', function(done) {
           // console.log(' this done:',+new Date);
           this.timeout(6700);
           var x = true;

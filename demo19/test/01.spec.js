@@ -1,6 +1,4 @@
 //ES6测试
-// require('should');
-// const mylib = require('../index').default;
 import 'should'
 import mylib,{add} from '../index';
 
@@ -16,12 +14,12 @@ describe('My First Test[01.spec.js]', () => {
         mylib().should.be.eql('Hello Tmall');
       });
       before(function() {
-        console.info(' before:',+new Date);
+        console.info(' before[01.spec.js]:',+new Date);
         // runs before all tests in this block
       });
 
       after(function() {
-        console.info(' after:',+new Date);
+        console.info(' after[01.spec.js]:',+new Date);
         // runs after all tests in this block
       });
 });
