@@ -34,7 +34,7 @@ finish - 所有数据已被写入到底层系统时触发。
 // };
 
 
-
+const zlib = require('zlib');
 var fs = require('fs');
 var readFile = fs.readFile;
 // console.log(' readFile:',readFile);
@@ -64,12 +64,28 @@ file.on('data', function(chunk) {
 
 
 const writable2 = fs.createWriteStream('file.txt');
+const writable3 = fs.createWriteStream('fileB.txt');
 console.dir('writable2:',writable2)
 writable2.write('node 流 实践,');
 writable2.write('<<<<<<<node 流 实践,');
 // All the data from readable goes into 'file.txt'
-file.pipe(writable2);
-// file.pipe();
+global.zz = file.pipe(writable2,{end:false})
+global.yy = file.pipe(writable3,{end:false});
+console.warn('***********2',__dirname);
+
+writable3.write('\n\n结束，再见~~~~~~~~~~\n\n');
+console.log(' zlib:',zlib)
+// global.z = zlib.createGzip();
+file.on('end', () => {
+    console.info(' end---->file:',arguments);
+    writable2.end('\nGoodbye\n');
+    writable3.write('\n0\n');
+    writable3.write('\n1\n');
+    writable3.end('\n2\n');
+});
+writable3.on('finish',function(){
+     console.log("Write complete.",arguments);
+})
 
 
 

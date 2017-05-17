@@ -1,15 +1,15 @@
- before: 1494577045624
-it[01-1.spec.js] 1494577045626 Assertion {
+ before: 1495016770454
+it[01-1.spec.js] 1495016770461 Assertion {
   obj: 'Hello Tmall',
   anyOne: false,
   negate: false,
   params: { actual: 'Hello Tmall' } }
-it[01-2.spec.js] 1494577045659
- after: 1494577045660
-it[02.spec.js] 1494577045661
+it[01-2.spec.js] 1495016770584
+ after: 1495016770585
+it[02.spec.js] 1495016770586
 <<<<<在本区块的所有测试用例之前执行
 在本区块的每个测试用例之前执行>>>>>>>>
-it[test.spec.js] 1494577045662
+it[test.spec.js] 1495016770588
 在本区块的每个测试用例之前执行>>>>>>>>
 在本区块的每个测试用例之前执行>>>>>>>>
 # TOC
