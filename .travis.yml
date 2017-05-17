@@ -3,4 +3,3 @@ node_js:
   - "stable"
   - "5.0.0"
 script: "npm run test5"
-after_script: "npm install coveralls@2.10.0 && cat ./coverage/lcov.info | coveralls"
