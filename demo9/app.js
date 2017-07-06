@@ -8,6 +8,8 @@ var server = new http.Server();
 server.listen(8000);
 
 server.on('request',function(request,response){
+  console.warn(' request:',request);
+  console.info(' response:',response);
   // 解析请求的URL
   var _url = url.parse(request.url);
   var filename = _url.pathname.substring(1);
@@ -15,6 +17,9 @@ server.on('request',function(request,response){
   var type = getType(postfix);
 
   _url.postfix = postfix;
+  console.warn('  postfix:',postfix,' type:',type);
+  response.setHeader('Content-type2', 'application/json');
+  response.setHeader('X-Powered-By', 'bacon');
 
   response.writeHead(200, {
     'Content-Type': type,
