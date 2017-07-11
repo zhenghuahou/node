@@ -63,29 +63,41 @@ router.get(
 
 app.use(router.routes());
 
+    window.router = router;
 
 router
-    .get('/users', function (ctx, next) {
+  .param('id', function (id,ctx, next) {
+    // ctx.user = users[id];
+    // if (!ctx.user) return ctx.status = 400;
+    console.warn(' ******',arguments);
+    return ctx.body = 'Hello param 华子!id@@@@';
+     // return next();
+  });
+
+// router.get('huazi', '/users/:id', function (ctx, next) {
+//         console.warn('[30] /users-------->',ctx,this);
+//     })
+  router.get('/users', function (ctx, next) {
     console.warn('[3] /users-------->',ctx);
     ctx.body = 'Hello World!get';
   })
-  .get('/users/:id', function (ctx, next) {
-    console.warn(' [4]/users/:id-------->',ctx);
-    ctx.body = `Hello World! id:<b>${ctx.params.id}<b>`;
-  })
-  .post('/users', function (ctx, next) {
-    ctx.body = 'Hello World! post';
-  })
-  .put('/users/:id', function (ctx, next) {
-    ctx.body = 'Hello World! put';
-  })
-  .del('/users/:id', function (ctx, next) {
-    ctx.body = 'Hello World! del';
-  })
-  .all('/users/:id', function (ctx, next) {
-    console.warn(' ctx(all):',ctx);
-    ctx.body = 'Hello World! all';
-  });
+  // .get('/users/:id', function (ctx, next) {
+  //   console.warn(' [4]/users/:id-------->',ctx);
+  //   ctx.body = `Hello World! id:<b>${ctx.params.id}<b>`;
+  // })
+  // .post('/users', function (ctx, next) {
+  //   ctx.body = 'Hello World! post';
+  // })
+  // .put('/users/:id', function (ctx, next) {
+  //   ctx.body = 'Hello World! put';
+  // })
+  // .del('/users/:id', function (ctx, next) {
+  //   ctx.body = 'Hello World! del';
+  // })
+  // .all('/users/:id', function (ctx, next) {
+  //   console.warn(' ctx(all):',ctx);
+  //   ctx.body = 'Hello World! all';
+  // });
 
 
 app.listen(3000);
