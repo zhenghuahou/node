@@ -52,8 +52,8 @@ a{
     box-sizing: border-box;
     border-radius: 2px;    
 }
-.lists a:hover{
-    background-color: #e8f1ff;
+.lists li:hover{
+    background-color: #eee;
 }
 .conftact-info{
     border-top: 2px solid #EDEEEF;
