@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>所有项目</title>
+</head>
+<body>
+    <header>
+        <h1>项目列表</h1>
+    </header>
+    <div class="manager_projects_list">
+    <ul>
+        <% projects.forEach(function(item){ %>
+            <li class='test'>
+                <a href="<%=item.link%>"><%=item.name%></a>
+            </li>
+        <%})%>
+    </ul>
+    </div>
+    <span>&copy; zhenghuahou.</span>
+</body>
+</html>
