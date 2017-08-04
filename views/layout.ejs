@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <title>所有项目</title>
     <link href="http://todomvc.com/site-assets/favicon.ico" rel="shortcut icon">
+    <link rel="stylesheet" type="text/css" href="./layout.css">
 </head>
 <body>
     <header>
         <h1>目录:</h1>
     </header>
-    <div class="manager_projects_list">
-    <ul>
-        <% projects.forEach(function(item){ %>
-            <li class='test'>
-                <a href="<%=item.link%>"><%=item.name%></a>
-            </li>
-        <%})%>
-    </ul>
+    <div class="projects">
+        <ul class='lists'>
+            <% projects.forEach(function(item){ %>
+                <li class='test'>
+                    <a href="<%=item.link%>"><%=item.name%></a>
+                </li>
+            <%})%>
+        </ul>
     </div>
-    <span>&copy; zhenghuahou.</span>
+    <span class='conftact-info'>&copy; zhenghuahou.</span>
 </body>
 </html>
