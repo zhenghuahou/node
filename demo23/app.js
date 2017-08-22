@@ -1,3 +1,6 @@
+ //设置环境变量
+ //https://gxnotes.com/article/75643.html
+ //http://www.ruanyifeng.com/blog/2016/10/npm_scripts.html
  // NODE_ENV=test xxaa=23  DEBUG=12 debug=true  node demo23/app.js
  /*
  process.env.NODE_ENV:::: test
