@@ -8,6 +8,8 @@
  process.env.debug:: true
  process.env.DEBUG:: 12
  */
+
+
  console.log(' process.env::::',process.env);
  console.log(' process.env.NODE_ENV::::',process.env.NODE_ENV);
  console.log(' process.env.xxaa::',process.env.xxaa);
