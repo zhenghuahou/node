@@ -21,6 +21,7 @@
     "should": "^11.2.1"
   },
   "scripts": {
+    "start": "NODE_ENV=dev node ./bin/www",
     "dev":"node build/app.js",
     "test": "mocha demo19/test/**/*.js --require babel-core/register",
     "desc-test1": "npm run test1值会运行test/dir子目录的js测试用例.由于npm脚本就是Shell脚本,*会先被shell解释",
