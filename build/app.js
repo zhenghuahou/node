@@ -96,7 +96,7 @@ app.get('/(*)?', getFile);
 
 if (!module.parent) {
   app.listen(3001);
-  console.log('Express started on port 3000');
+  console.log('Express started on port 3001');
 }
 
 
