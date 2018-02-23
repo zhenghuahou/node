@@ -18,32 +18,32 @@ function getTestPersonaLoginCredentials(callback) {
     port:3000,
     path: '/data.json'
   }, function(response) {
-    console.info('@@@@ arguments:',arguments);
+    // console.info('@@@@ arguments:',arguments);
     var body = ''; 
     // response.setEncoding('utf8');
     response.on('data', function(d) {
       body += d;
-      console.error(typeof body,body,'getTestPersonaLoginCredentials--->data事件:',d,' typeofof d:',typeof d,' arguments:',arguments);
+      // console.error(typeof body,body,'getTestPersonaLoginCredentials--->data事件:',d,' typeofof d:',typeof d,' arguments:',arguments);
     });
 
     response.on('end', function() {
       var parsed = JSON.parse(body);
 
-      console.warn(' getTestPersonaLoginCredentials--->end事件 :',parsed,typeof parsed ,'arg:',arguments)
+      // console.warn(' getTestPersonaLoginCredentials--->end事件 :',parsed,typeof parsed ,'arg:',arguments)
       callback(parsed);
     });
   });
 }
 
 var inst1 = getTestPersonaLoginCredentials(function(){
-        console.log(' getTestPersonaLoginCredentials 回调:',arguments[0])
+        // console.log(' getTestPersonaLoginCredentials 回调:',arguments[0])
       });
 
 function httpGet(){
   return  http.get('http://nodejs.org/dist/index.json', (res) => {
       tt1 = +new Date;
-      console.warn(tt1,res.headers['content-length'],res.headers['content-type']
-,' get 自定义方法 res:',res,' res.statusCode:',res.statusCode,' res.end:',res.end);
+      // console.warn(tt1,res.headers['content-length'],res.headers['content-type']
+// ,' get 自定义方法 res:',res,' res.statusCode:',res.statusCode,' res.end:',res.end);
       const statusCode = res.statusCode;
       const contentType = res.headers['content-type'];
       let error;
@@ -70,31 +70,31 @@ function httpGet(){
         tt2 = +new Date;
         num ++;
         rawData += chunk;
-        console.warn(tt2,' res.data 事件 chunk --->:',typeof chunk,arguments);
+        // console.warn(tt2,' res.data 事件 chunk --->:',typeof chunk,arguments);
       });
       res.on('end', () => {
          tt3 = +new Date;
-         console.warn(tt3,' res.end 事件 --->:',arguments);
+        //  console.warn(tt3,' res.end 事件 --->:',arguments);
         try {
           let parsedData = JSON.parse(rawData);
-          console.log('parsedData:', parsedData);
+          // console.log('parsedData:', parsedData);
         } catch (e) {
-          console.log(e.message);
+          // console.log(e.message);
         }
       });
     }).on('error', (e) => {
-      console.log(`Got error: ${e.message}`);
+      // console.log(`Got error: ${e.message}`);
     });
 }
 
-var inst2 =  httpGet();
+// var inst2 =  httpGet();
 
 function httpRequest(){
   var postData = querystring.stringify({
     'msg' : 'Hello World!你'
   });
 
-  console.error(' Buffer:',Buffer, Buffer.byteLength(postData), ' len:',postData.length);
+  // console.error(' Buffer:',Buffer, Buffer.byteLength(postData), ' len:',postData.length);
 
   var options = {
     hostname: 'www.google.com',
@@ -129,19 +129,23 @@ function httpRequest(){
   req.write(postData);
   req.end();
 }
-var inst3 =  httpRequest();
+// var inst3 =  httpRequest();
 
-console.log(' inst3:',inst3,'inst2:',inst2)
+// console.log(' inst3:',inst3,'inst2:',inst2)
 
 
 function handler3(request,response){
   let {url} = request; 
   let postfix = getPostfix(url);
-
+  console.log(' request:',request)
+  console.warn(' response:',response);
+  global.req = request;
+  global.response = response;
+  
   if(filter(postfix)){
-    console.info(request.headers['content-length'],request.headers['connection'],'浏览器发出的请求  request:',request,
-      ' request.statusCode:',request.statusCode,
-      ' response:',response);
+    // console.info(request.headers['content-length'],request.headers['connection'],'浏览器发出的请求  request:',request,
+      // ' request.statusCode:',request.statusCode,
+      // ' response:',response);
     route(request,response,postfix);
 
   }
@@ -180,7 +184,7 @@ function route(request,response,postfix){
       let html ='';
       response.writeHead(200, {'Content-Type': 'text/html'});
       t2 = +new Date;
-      console.log(error,' data:',data,' t2:',t2,' t2-t1:',t2-t1)
+      // console.log(error,' data:',data,' t2:',t2,' t2-t1:',t2-t1)
       html = error ? '404:-O,页面迷路了' : data;
       response.end(html);
 

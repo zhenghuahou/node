@@ -26,6 +26,7 @@ var filterReg = /^\..+$/;
 function getIndex(req,res){
     console.time('readdirSync');
     var dir = fs.readdirSync('./');
+    console.log(' dir:',dir);
     console.timeEnd('readdirSync');
     renderList(dir,res);
 }
@@ -90,6 +91,19 @@ function getFile(req,res){
     //当路径中存在扩展名的时候,直接返回改文件内容
     readFile(pathname,res);
 }
+
+
+console.log(' ./build/mine.js:',path.resolve('./build/test.json'),path.resolve('./mine.js'));
+// var content = fs.readFileSync('./build/test.json',{encoding:"utf8"});
+var content = fs.readFileSync('./build/test.json');
+var jsD = JSON.parse(content);
+console.log(' content:::',content,typeof content,' css:',content.css);
+console.log(' jsD:::----->11112233445566',jsD,typeof jsD,' css:',jsD.css);
+
+
+const s = process.stderr;
+console.log(' s:',s,s._handle.writeQueueSize);
+ s.write('\u001b[?25h');
 
 app.get('/?', getIndex);
 app.get('/(*)?', getFile);

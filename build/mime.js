@@ -18,4 +18,4 @@ module.exports = {
     "wmv": "video/x-ms-wmv",
     "xml": "text/xml",
     "default": "text/plain"
-};
+}
