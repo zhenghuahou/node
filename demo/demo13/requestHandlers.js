@@ -24,13 +24,13 @@ function static(response, request, ext) {
     let {Expires} = config;
     let {maxAge} = Expires;
 
-    // parseCookie(request);
+    parseCookie(request);
     
     //设置缓存信息
     if (ext.match(Expires.fileMatch)) {
         let expires = new Date();
         expires.setTime(+expires + maxAge * 1000);
-        response.setHeader('Set-Cookie', ['test=11', 'language=js']);
+        response.setHeader('Set-Cookie', ['test=11', 'test=js']);
         response.setHeader('Expires', expires.toUTCString());
         response.setHeader('Cache-control', "max-age=" + maxAge);
         // console.error(+new Date,request,response,'request.write:',request.write,'response.write:',response.write);
@@ -48,7 +48,7 @@ function static(response, request, ext) {
 
         //如果script 外链依然放在head头部，可以添加async属性，异步下载html，不会阻塞html解析，但是js下载完毕，执行js时候会阻塞html解析
 
-        //如果script 外链依然放在head头部，可以添加defer属性，异步下载html，不会阻塞html解析，知道html解析完毕，才会执行这个js，而且js执行顺序和它们在页面的顺序是一致的。defer会阻塞DOMContentLoaded事件触发时机
+        //如果script 外链依然放在head头部，可以添加defer属性，异步下载html，不会阻塞html解析，直到html解析完毕，才会执行这个js，而且js执行顺序和它们在页面的顺序是一致的。defer会阻塞DOMContentLoaded事件触发时机
 
             fs.stat(realpath, (err, stats) => {
                 if (err) throw err;
@@ -93,7 +93,7 @@ function static(response, request, ext) {
                 // raw.on('end', function() {
                 //     console.error(' data------->',data);
                 //     response.end(data); //171
-                // });
+                // }); 
 
                 // response.write(data);
                 // response.end();

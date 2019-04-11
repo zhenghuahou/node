@@ -8,16 +8,18 @@ var server = new http.Server();
 server.listen(8000);
 
 server.on('request',function(request,response){
-  console.warn(' request:',request);
-  console.info(' response:',response);
+  // console.warn(' request:',request);
+  // console.info(' response:',response);
   // 解析请求的URL
   var _url = url.parse(request.url);
+  var extname = path.extname(_url.pathname);
+  console.warn(' _url--->',_url,typeof _url,' extname-->',extname,typeof extname);
   var filename = _url.pathname.substring(1);
   var postfix = getPostfix(_url);
   var type = getType(postfix);
 
   _url.postfix = postfix;
-  console.warn('  postfix:',postfix,' type:',type);
+  console.warn(' <------- postfix:',postfix,' type:',type);
   response.setHeader('Content-type2', 'application/json');
   response.setHeader('X-Powered-By', 'bacon');
 
@@ -25,7 +27,7 @@ server.on('request',function(request,response){
     'Content-Type': type,
     'X-Foo':'bala'
   });
-  
+
   route(response,_url);
 });
 
@@ -40,7 +42,7 @@ function getType(postfix=''){
       case 'txt' :     type = 'text/plain; charset=UTF-8'; break;
       case 'manifest': type = 'text/cache-manifest; charset=UTF-8'; break;
       case 'html':
-      case 'htm':  
+      case 'htm':
       default:     type = 'text/html; charset=UTF-8'; break;
     }
     return type;
@@ -64,19 +66,17 @@ function filter(postfix = ''){
 function route(response,url){
   let{postfix,pathname} = url;
   if(pathname.slice(-1) === '/'){
-    pathname +='index'; 
+    pathname +='index';
   }
   pathname =  pathname.slice(1);
-  console.info(' url:',url,'pathname:',pathname);
+  // console.info(' url:',url,'pathname:',pathname);
   if(filter(postfix)){
     postfix = postfix ? '': '.html';
     // console.error(`${__dirname}/static/${pathname}${postfix}`)
     fs.readFile(`${__dirname}/static/${pathname}${postfix}`,'utf8',function(err,content){
       // console.error('err:',err,'content:',content,' time:',+new Date);
       content = err ? err.message: content;
-      response.end(content); 
+      response.end(content);
     })
   }
 }
-
-
