@@ -1,0 +1,21 @@
+{
+  "name": "cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "cli-demo": "bin/index.js"
+  },
+  "scripts": {
+    "test-ok":" PORT=8180 node app.js",
+    "test-err":"set PORT=8180 & node app.js",
+    "test-err-description":"set PORT=8180 & node app.js ===>  process.env.PORT值为undefined",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "handlebars": "^4.7.6"
+  }
+}
